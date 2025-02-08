@@ -38,7 +38,7 @@ function App() {
     <Router>
       <Appbar user={user} />
       <div className="App"> 
-        <div className="auth-wrapper">
+        <div className="auth-wrapper"> 
           <div className="auth-inner">
             <Routes>
               <Route path="/"element={user ? <Navigate to="/profile" /> : <Login />}/>
