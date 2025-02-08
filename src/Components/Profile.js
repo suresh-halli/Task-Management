@@ -1,50 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { Card, CardContent, CardMedia, Typography, CircularProgress, Box } from "@mui/material";
+import profile from '../Images/profileimg.jpeg'
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
-  const fetchUserData = async () => {
-    auth.onAuthStateChanged(async (user) => {
-      // console.log(user);
-      const docRef = doc(db, "Users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserDetails(docSnap.data());
-        console.log(docSnap.data());
-      } else {
-        console.log("User is not logged in");
-      }
-    });
-  };
+
   useEffect(() => {
+    const fetchUserData = async () => {
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          const docRef = doc(db, "Users", user.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setUserDetails(docSnap.data());
+          } else {
+            console.log("User data not found");
+          }
+        }
+      });
+    };
+
     fetchUserData();
   }, []);
 
- 
   return (
-    <div>
+    <Box display="flex" justifyContent="center" alignItems="center" mt="20px">
       {userDetails ? (
-        <>
-          {/* <div style={{ display: "flex", justifyContent: "center", marginTop:10 }}>
-          <img
-              src={userDetails.photo }
-              width={"40%"}
-              style={{ borderRadius: "50%" }}
+        <Card sx={{ width: 400, textAlign: "center", p: 2, boxShadow: 3 }}>
+          {userDetails.photo && (
+            <CardMedia
+              component="img"
+              height="120"
+              image={userDetails.photo}
+              alt={profile}
+              sx={{ borderRadius: "50%", width: 120, height: 120, margin: "10px auto" }}
             />
-          </div> */}
-          <h3>Welcome {userDetails.firstName} </h3>
-          <div>
-            <p>Email: {userDetails.email}</p>
-            <p>First Name: {userDetails.firstName}</p>
-            <p>Last Name: {userDetails.lastName}</p>
-          </div>
-         
-        </>
+          )}
+          <CardContent>
+            <Typography variant="h5">Welcome, {userDetails.firstName}!</Typography>
+            <Typography variant="body1">Email: {userDetails.email}</Typography>
+            <Typography variant="body1">First Name: {userDetails.firstName}</Typography>
+            <Typography variant="body1">Last Name: {userDetails.lastName || ""}</Typography>
+          </CardContent>
+        </Card>
       ) : (
-        <p>Loading...</p>
+        <CircularProgress />
       )}
-    </div>
+    </Box>
   );
 }
+
 export default Profile;

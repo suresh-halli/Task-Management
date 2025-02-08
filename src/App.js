@@ -26,12 +26,7 @@ function App() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
-      if (currentUser) {
-        localStorage.setItem("user", JSON.stringify(currentUser)); // Store user in local storage
-      } else {
-        localStorage.removeItem("user"); // Clear if logged out
-      }
-      setLoading(false);
+      setLoading(false); // Authentication check complete
     });
 
     return () => unsubscribe();

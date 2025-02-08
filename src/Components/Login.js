@@ -37,7 +37,6 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
       console.log("User logged in Successfully");
-      window.location.href = "/profile";
       toast.success("User logged in Successfully", { position: "top-center" });
     } catch (error) {
       console.log(error.message);

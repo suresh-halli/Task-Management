@@ -40,6 +40,7 @@ export default function SignUp() {
       }
 
       toast.success("User Registered Successfully!!", { position: "top-center" });
+      window.location.href='/login'
     } catch (error) {
       console.error(error.message);
       toast.error(error.message, { position: "bottom-center" });

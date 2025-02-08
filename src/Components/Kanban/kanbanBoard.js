@@ -56,41 +56,28 @@ const KanbanBoard = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <Box sx={{ textAlign: "center", p: 2 }}>
-        {/* <Typography variant="h6" gutterBottom>
-          Task Board
-        </Typography> */}
-        <Grid container justifyContent="center">
-          <Grid
-            item
-            xs={12}
-            sm={10}
-            sx={{ display: "flex", justifyContent: "center", gap: 1 }}
-          >
-            {["To Do", "In Progress", "Done"].map((status) => (
-              <Grid item xs={12} sm={6} key={status}>
-                <Box
-                  sx={{
-                    color: "GrayText",
-                    borderRadius: "5px",
-                    textAlign: "left",
-                  }}
-                >
-                  <Typography variant="h6">{status}</Typography>
-                </Box>
-                <Column
-                  status={status}
-                  tasks={tasks.filter((task) => task.status === status)}
-                  moveTask={moveTask}
-                  loadingTask={loadingTask}
-                  currentUserEmail={currentUserEmail}
-                />
-              </Grid>
-            ))}
-          </Grid>
+        <Box sx={{ textAlign: "center", p: 2 }}>
+        <Grid container justifyContent="center" spacing={2}>
+          {["To Do", "In Progress", "Done"].map((status) => (
+            <Grid item xs={12} sm={4} key={status}>
+              <Typography
+                variant="h6"
+                sx={{ color: "GrayText", textAlign: "left", mb: 1 }}
+              >
+                {status}
+              </Typography>
+              <Column
+                status={status}
+                tasks={tasks.filter((task) => task.status === status)}
+                moveTask={moveTask}
+                loadingTask={loadingTask}
+                currentUserEmail={currentUserEmail}
+              />
+            </Grid>
+          ))}
         </Grid>
-
       </Box>
+      
     </DndProvider>
   );
 };

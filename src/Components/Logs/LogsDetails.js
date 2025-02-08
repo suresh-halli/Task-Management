@@ -8,6 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Box, Typography } from "@mui/material";
 
 const LogsTable = () => {
   const [logs, setLogs] = useState([]);
@@ -22,6 +23,10 @@ const LogsTable = () => {
   }, []);
 
   return (
+    <Box sx={{ p: 2, width: "100%" }}>
+    <Typography variant="h5" sx={{ mb: 2 }}>
+      Logs History
+    </Typography>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="logs table">
         <TableHead>
@@ -44,6 +49,7 @@ const LogsTable = () => {
         </TableBody>
       </Table>
     </TableContainer>
+    </Box>
   );
 };
 

@@ -21,7 +21,7 @@ const Appbar = ({ user }) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky" style={{backgroundColor:"#80c3ff", }}>
       <Toolbar>
         <Typography  variant="h6" sx={{ flexGrow: 1 }}>
           Task Manager
