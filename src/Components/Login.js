@@ -8,13 +8,13 @@ import { z } from 'zod';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SignInwithGoogle from "./SignInWithGoogle";
+import { Link } from 'react-router-dom';
 
 
 const defaultTheme = createTheme(); 
@@ -91,7 +91,7 @@ export default function Login() {
             </Button>
           </Box>
           <Grid item>
-            <Link href="/register" variant="body2">
+            <Link to="/register" >
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>

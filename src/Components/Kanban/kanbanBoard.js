@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import { collection, onSnapshot, updateDoc, doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../firebase";
 import { DndProvider } from "react-dnd";
@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { toast } from "react-toastify";
 import Column from "./column";
+import { logAction } from "../Logs/LogServices";
 
 const KanbanBoard = () => {
   const [tasks, setTasks] = useState([]);
@@ -31,20 +32,51 @@ const KanbanBoard = () => {
     return () => unsubscribe();
   }, []);
 
+  // const moveTask = async (id, newStatus) => {
+  //   const taskRef = doc(db, "tasks", id);
+  //   console.log(taskRef);
+
+  //   const task = tasks.find((t) => t.id === id);
+
+  //   // if (!task.allocateto || task.allocateto.toLowerCase() !== currentUserEmail?.toLowerCase()) {
+  //   //   toast.error("You can only move tasks assigned to you");
+  //   //   return;
+  //   // }
+
+  //   setLoadingTask(id);
+  
+  //   try {
+  //     await updateDoc(taskRef, { status: newStatus });
+  //     await logAction(id, "Moved Task", {
+  //       from: task.status,
+  //       to: newStatus,
+  //     });
+  //     toast.success("Task status updated successfully");
+  //   } catch (error) {
+  //     console.error("Error updating task:", error);
+  //     toast.error("Failed to update task");
+  //   } finally {
+  //     setLoadingTask(null);
+  //   }
+  // };
   const moveTask = async (id, newStatus) => {
-    const taskRef = doc(db, "tasks", id);
-    console.log(taskRef);
-
-    const task = tasks.find((t) => t.id === id);
-
-    // if (!task.allocateto || task.allocateto.toLowerCase() !== currentUserEmail?.toLowerCase()) {
-    //   toast.error("You can only move tasks assigned to you");
-    //   return;
-    // }
-
     setLoadingTask(id);
+  
     try {
+      const taskRef = doc(db, "tasks", id);
+      const taskSnap = await getDoc(taskRef); 
+  
+      
+  
+      const task = taskSnap.data();
+  
       await updateDoc(taskRef, { status: newStatus });
+  
+      await logAction(id, "Moved Task", {
+        previousStatus: task.status || "unknown",
+        newStatus: newStatus,
+      });
+  
       toast.success("Task status updated successfully");
     } catch (error) {
       console.error("Error updating task:", error);
@@ -53,6 +85,8 @@ const KanbanBoard = () => {
       setLoadingTask(null);
     }
   };
+  
+  
 
   return (
     <DndProvider backend={HTML5Backend}>
