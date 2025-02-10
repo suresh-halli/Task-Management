@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 import { logAction } from "../Logs/LogServices";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 const CreateTask = () => {
   const [formData, setFormData] = useState({
@@ -31,6 +33,7 @@ const CreateTask = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const navigate=useNavigate()
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -54,7 +57,6 @@ const CreateTask = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear error when user starts typing
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: "" });
     }
@@ -62,8 +64,6 @@ const CreateTask = () => {
 
   const validateForm = () => {
     let tempErrors = {};
-
-    // Validate all fields
     if (!formData.title.trim()) tempErrors.title = "Title is required";
     if (!formData.description.trim()) tempErrors.description = "Description is required";
     if (!formData.allocateto) tempErrors.allocateto = "Please select a user";
@@ -102,7 +102,7 @@ const CreateTask = () => {
       });
       setErrors({});
       setTimeout(() => {
-        window.location.href = '/taskdetails'
+       navigate('/taskdetails') 
       },1000)
 
     } catch (error) {

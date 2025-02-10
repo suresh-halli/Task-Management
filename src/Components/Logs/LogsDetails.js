@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,15 +15,17 @@ const LogsTable = () => {
 
   useEffect(() => {
     const fetchLogs = async () => {
-      const querySnapshot = await getDocs(collection(db, "logs"));
+      const logsRef = collection(db, "logs");
+      const q = query(logsRef, orderBy("timestamp", "desc")); 
+      const querySnapshot = await getDocs(q);
+      
       setLogs(querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     };
 
     fetchLogs();
   }, []);
-
   return (
-    <Box sx={{ p: 2, width: "100%" }}>
+    <Box sx={{ p: 2, width: "90%" }}>
     <Typography variant="h5" sx={{ mb: 2 }}>
       Logs History
     </Typography>
